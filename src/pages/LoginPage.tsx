@@ -1,4 +1,3 @@
-import React from "react";
 import heroVid from "../assets/video.mp4";
 
 import { auth, provider } from "../config/firebase";

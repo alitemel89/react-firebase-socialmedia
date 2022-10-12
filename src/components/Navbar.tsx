@@ -36,13 +36,19 @@ const Navbar = () => {
             </Link>
             {user ? (
               <>
-                <Link to="/about" className="px-4 font-bold text-lg">
+                <Link to="/createpost" className="px-4 font-bold text-lg text-cyan-400">
+                  Create Post +
+                </Link>
+                <Link to="/" className="px-4 font-bold text-lg">
                   {user?.displayName}
                 </Link>
+
                 <div className="mr-4">
                   <img
                     src={user?.photoURL || ""}
                     className="h-10 w-10 rounded-full"
+                    alt="profile"
+                    referrerPolicy="no-referrer"
                   />
                 </div>
 
@@ -116,11 +122,16 @@ const Navbar = () => {
                 <img
                   src={user?.photoURL || ""}
                   className="h-12 w-12 rounded-full"
+                  alt="profile"
                 />
 
-                <Link to="/" className="py-2">Home</Link>
+                <Link to="/" className="py-2">
+                  Home
+                </Link>
 
-                <Link to="/about" className="py-2">About</Link>
+                <Link to="/about" className="py-2">
+                  About
+                </Link>
 
                 <Link to="/login">
                   <button
