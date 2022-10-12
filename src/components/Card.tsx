@@ -1,0 +1,60 @@
+import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { BiCurrentLocation } from "react-icons/bi";
+import { auth } from "../config/firebase";
+
+const Card = () => {
+  const [user] = useAuthState(auth);
+  return (
+    <div
+      className="bg-white text-gray-700 w-full min-h-[5rem]
+     rounded-md overflow-hidden
+     shadow-lg border-2"
+    >
+      <div className="flex justify-between items-center mt-1 px-3">
+        <div className="flex items-center">
+          <img
+            src={user?.photoURL || ""}
+            alt=""
+            className="w-10 h-10 rounded-full"
+          />
+          <span className="p-3 text-xl font-bold">{user?.displayName}</span>
+        </div>
+        <span className="flex items-center rounded-md text-sm">
+          <BiCurrentLocation size={20} className="mr-2" />
+          Antalya, Turkey
+        </span>
+      </div>
+      <img
+        src="https://cdn.pixabay.com/photo/2015/12/04/14/05/code-1076536_960_720.jpg"
+        alt="product"
+        className="w-full object-fill"
+      />
+      <div className="p-4 flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <span className="px-3 py-1 rounded-full text-xs bg-gray-100">
+            #react
+          </span>
+          <span className="px-3 py-1 rounded-full text-xs bg-gray-100">
+            #firebase
+          </span>
+        </div>
+
+        <h2
+          className="font-semibold text-2xl overflow-ellipsis overflow-hidden whitespace-nowrap"
+          title="Best Headphone Ever"
+        >
+          React and Firebase Project
+        </h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum nobis
+          corporis sit quidem esse sapiente enim quo, incidunt culpa ex neque
+          explicabo corrupti necessitatibus provident doloribus debitis
+          voluptatibus voluptates placeat!
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Card;

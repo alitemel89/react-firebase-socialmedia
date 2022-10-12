@@ -2,7 +2,9 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from '../config/firebase'
+import { auth, db } from '../config/firebase'
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
 
 interface CreateFormData {
   title: string;
@@ -10,6 +12,8 @@ interface CreateFormData {
 }
 
 const CreateForm = () => {
+  const navigate = useNavigate()
+  const [user] = useAuthState(auth)
   const schema = yup.object().shape({
     title: yup.string().required("You must add a title"),
     description: yup.string().required("You must add a description"),
@@ -27,9 +31,12 @@ const CreateForm = () => {
 
   const onCreatePost = async (data: CreateFormData) => {
     await addDoc(postsRef, {
-      title: data.title,
-      description: data.description
+      ...data,
+      username: user?.displayName,
+      userId: user?.uid
     })
+
+    navigate("/")
   };
 
   return (
@@ -138,7 +145,7 @@ const CreateForm = () => {
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                <button className="py-2 text-white">Save</button>
+                <button className="py-2 text-white active:scale-95">Save</button>
               </div>
             </div>
           </div>
