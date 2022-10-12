@@ -1,9 +1,14 @@
-import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BiCurrentLocation } from "react-icons/bi";
 import { auth } from "../config/firebase";
+import { Post as IPost } from "../pages/MainPage";
 
-const Card = () => {
+interface PostProps {
+  post: IPost;
+}
+
+const Card = (props: PostProps) => {
+  const { post } = props;
   const [user] = useAuthState(auth);
   return (
     <div
@@ -18,7 +23,7 @@ const Card = () => {
             alt=""
             className="w-10 h-10 rounded-full"
           />
-          <span className="p-3 text-xl font-bold">{user?.displayName}</span>
+          <span className="p-3 text-xl font-bold">{post.username}</span>
         </div>
         <span className="flex items-center rounded-md text-sm">
           <BiCurrentLocation size={20} className="mr-2" />
@@ -40,18 +45,10 @@ const Card = () => {
           </span>
         </div>
 
-        <h2
-          className="font-semibold text-2xl overflow-ellipsis overflow-hidden whitespace-nowrap"
-          title="Best Headphone Ever"
-        >
-          React and Firebase Project
+        <h2 className="font-semibold text-2xl overflow-ellipsis overflow-hidden whitespace-nowrap">
+          {post.title}
         </h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum nobis
-          corporis sit quidem esse sapiente enim quo, incidunt culpa ex neque
-          explicabo corrupti necessitatibus provident doloribus debitis
-          voluptatibus voluptates placeat!
-        </p>
+        <p>{post.description}</p>
       </div>
     </div>
   );
