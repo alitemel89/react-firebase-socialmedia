@@ -1,5 +1,3 @@
-
-
 const AboutPage = () => {
   return (
     <div className="mx-auto m-1">

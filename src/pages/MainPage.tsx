@@ -10,6 +10,7 @@ export interface Post {
   description: string;
   userId: string;
   username: string;
+  postImage: string;
 }
 
 const MainPage = () => {

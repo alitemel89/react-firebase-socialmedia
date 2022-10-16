@@ -30,11 +30,7 @@ const Card = (props: PostProps) => {
           Antalya, Turkey
         </span>
       </div>
-      <img
-        src="https://cdn.pixabay.com/photo/2015/12/04/14/05/code-1076536_960_720.jpg"
-        alt="product"
-        className="w-full object-fill"
-      />
+      <img src={post.postImage} alt="product" className="w-full object-fill" />
       <div className="p-4 flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <span className="px-3 py-1 rounded-full text-xs bg-gray-100">

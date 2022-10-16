@@ -2,9 +2,18 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addDoc, collection } from "firebase/firestore";
-import { auth, db } from '../config/firebase'
+import { auth, db, storage } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { v4 } from "uuid";
 
 interface CreateFormData {
   title: string;
@@ -12,11 +21,52 @@ interface CreateFormData {
 }
 
 const CreateForm = () => {
-  const navigate = useNavigate()
-  const [user] = useAuthState(auth)
+  const navigate = useNavigate();
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [user] = useAuthState(auth);
+  const [progress, setProgress] = useState(0);
+
+  const imagesListRef = ref(storage, "images/");
+  const uploadFile = () => {
+    if (imageUpload == null) return;
+    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageUrls((prev: string[]) => [...prev, url]);
+      });
+    });
+
+    const uploadTask = uploadBytesResumable(imageRef, imageUpload);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(progress);
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  };
+
+  useEffect(() => {
+    listAll(imagesListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setImageUrls((prev) => [...prev, url]);
+        });
+      });
+    });
+  }, []);
+
   const schema = yup.object().shape({
     title: yup.string().required("You must add a title"),
     description: yup.string().required("You must add a description"),
+    postImage: yup.string().default(imageUrls[0]),
   });
 
   const {
@@ -27,20 +77,20 @@ const CreateForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const postsRef = collection(db, "posts")
+  const postsRef = collection(db, "posts");
 
   const onCreatePost = async (data: CreateFormData) => {
     await addDoc(postsRef, {
       ...data,
       username: user?.displayName,
-      userId: user?.uid
-    })
+      userId: user?.uid,
+    });
 
-    navigate("/")
+    navigate("/");
   };
 
   return (
-    <form onSubmit={handleSubmit(onCreatePost)}>
+    <div>
       <div className="md:container md:mx-auto m-2">
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
@@ -127,12 +177,11 @@ const CreateForm = () => {
                           htmlFor="file-upload"
                           className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                         >
-                          <span>Upload a file</span>
                           <input
-                            id="file-upload"
-                            name="file-upload"
                             type="file"
-                            className="sr-only"
+                            onChange={(event: any) => {
+                              setImageUpload(event.target.files[0]);
+                            }}
                           />
                         </label>
                         <p className="pl-1">or drag and drop</p>
@@ -140,18 +189,37 @@ const CreateForm = () => {
                       <p className="text-xs text-gray-500">
                         PNG, JPG, GIF up to 10MB
                       </p>
+                      <progress
+                        value={progress}
+                        className="block w-full h-1 bg-cyan-600"
+                        max="100"
+                      />
+
+                      {progress === 100 ? <p className="text-sm text-indigo-600">Image uploaded!</p> : <></>}
+
+                      <button
+                        className="text-white py-1 text-sm px-2"
+                        onClick={uploadFile}
+                      >
+                        Upload
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                <button className="py-2 text-white active:scale-95">Save</button>
+                <button
+                  className="py-2 text-white active:scale-95"
+                  onClick={handleSubmit(onCreatePost)}
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 
