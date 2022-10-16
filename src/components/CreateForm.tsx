@@ -18,6 +18,7 @@ import { v4 } from "uuid";
 interface CreateFormData {
   title: string;
   description: string;
+  postImage: string;
 }
 
 const CreateForm = () => {
@@ -36,6 +37,7 @@ const CreateForm = () => {
         setImageUrls((prev: string[]) => [...prev, url]);
       });
     });
+    
 
     const uploadTask = uploadBytesResumable(imageRef, imageUpload);
 
@@ -63,12 +65,12 @@ const CreateForm = () => {
     });
   }, []);
 
+  
+
   const schema = yup.object().shape({
     title: yup.string().required("You must add a title"),
     description: yup.string().required("You must add a description"),
-    postImage: yup.string().default(imageUrls[0]),
   });
-
   const {
     register,
     handleSubmit,
@@ -84,6 +86,7 @@ const CreateForm = () => {
       ...data,
       username: user?.displayName,
       userId: user?.uid,
+      postImage: imageUrls.slice(-1)
     });
 
     navigate("/");
@@ -179,6 +182,7 @@ const CreateForm = () => {
                         >
                           <input
                             type="file"
+                            {...register("postImage")}
                             onChange={(event: any) => {
                               setImageUpload(event.target.files[0]);
                             }}
@@ -195,7 +199,7 @@ const CreateForm = () => {
                         max="100"
                       />
 
-                      {progress === 100 ? <p className="text-sm text-indigo-600">Image uploaded!</p> : <></>}
+                      {progress === 100 && <p className="text-sm text-indigo-600">Image uploaded!</p>}
 
                       <button
                         className="text-white py-1 text-sm px-2"
