@@ -13,7 +13,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center mx-auto w-full h-[90vh] ">
+    <div className="flex flex-col justify-center mx-auto w-full h-[90vh]">
       <video
         className="object-cover h-full w-full absolute -z-10"
         src={heroVid}

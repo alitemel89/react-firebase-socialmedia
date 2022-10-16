@@ -28,15 +28,18 @@ const Navbar = () => {
         </div>
         <div className="hidden md:flex">
           <ul className="flex text-white items-center">
-            <Link to="/" className="px-4">
-              Home
-            </Link>
-            <Link to="/about" className="px-4">
-              About
-            </Link>
             {user ? (
               <>
-                <Link to="/createpost" className="px-4 font-bold text-lg text-cyan-400">
+                <Link to="/" className="px-4">
+                  Feed
+                </Link>
+                <Link to="/about" className="px-4">
+                  About
+                </Link>
+                <Link
+                  to="/createpost"
+                  className="px-4 font-bold text-lg text-cyan-400"
+                >
                   Create Post +
                 </Link>
                 <Link to="/" className="px-4 font-bold text-lg">
@@ -63,6 +66,12 @@ const Navbar = () => {
               </>
             ) : (
               <>
+                <Link to="/" className="px-4">
+                  Home
+                </Link>
+                <Link to="/about" className="px-4">
+                  About
+                </Link>
                 <Link to="/login">
                   <button className="my-4 flex items-center">
                     Login <FcGoogle className="ml-2" size={25} />

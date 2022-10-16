@@ -2,6 +2,7 @@ import { getDocs, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { db } from "../config/firebase";
+import LoginPage from "./LoginPage";
 
 export interface Post {
   id: string;
@@ -27,13 +28,19 @@ const MainPage = () => {
   }, []);
 
   return (
-    <div className="h-screen md:mx-auto md:w-1/2 m-1">
-      <h1 className="text-center text-2xl text-cyan-800 p-4">Feed</h1>
-      <div className="grid grid-cols-1 gap-5">
-        {postsLists?.map((post) => (
-          <Card key={post.id} post={post} />
-        ))}
-      </div>
+    <div>
+      {postsLists ? (
+        <div className="h-screen md:mx-auto md:w-1/2 m-1">
+          <h1 className="text-center text-2xl text-cyan-800 p-4">Latest Posts</h1>
+          <div className="grid grid-cols-1 gap-5">
+            {postsLists?.map((post) => (
+              <Card key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <LoginPage />
+      )}
     </div>
   );
 };
