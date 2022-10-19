@@ -23,7 +23,7 @@ const Navbar = () => {
       <div className="max-w-[1240px] mx-auto px-4 flex justify-between items-center h-full">
         <div>
           <h1 className="text-white text-2xl font-bold italic">
-            Watermelon Joy 🍉
+            Travel Blog 🍉
           </h1>
         </div>
         <div className="hidden md:flex">

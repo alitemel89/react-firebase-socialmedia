@@ -1,7 +1,9 @@
 import { useAuthState } from "react-firebase-hooks/auth";
-import { BiCurrentLocation } from "react-icons/bi";
+import { GoLocation } from "react-icons/go";
 import { auth } from "../config/firebase";
 import { Post as IPost } from "../pages/MainPage";
+import { BsCalendarDate } from "react-icons/bs";
+import moment from "moment";
 
 interface PostProps {
   post: IPost;
@@ -10,6 +12,9 @@ interface PostProps {
 const Card = (props: PostProps) => {
   const { post } = props;
   const [user] = useAuthState(auth);
+  console.log(moment(post.timestamp.toDate()).format('LLLL'));
+  
+  
   return (
     <div
       className="bg-white text-gray-700 w-full min-h-[5rem]
@@ -26,7 +31,7 @@ const Card = (props: PostProps) => {
           <span className="p-3 text-xl font-bold">{post.username}</span>
         </div>
         <span className="flex items-center rounded-md text-sm">
-          <BiCurrentLocation size={20} className="mr-2" />
+          <GoLocation size={20} className="mr-2" />
           Antalya, Turkey
         </span>
       </div>
@@ -41,7 +46,14 @@ const Card = (props: PostProps) => {
           </span>
         </div>
 
-        <h2 className="font-semibold text-2xl overflow-ellipsis overflow-hidden whitespace-nowrap">
+        <div className="text-gray-500 flex items-center space-x-2 py-2">
+          <BsCalendarDate />
+          <span>{moment(post.timestamp.toDate()).format('LLLL')}</span>
+        </div>
+
+
+        <h2 className="font-semibold text-2xl overflow-ellipsis 
+        overflow-hidden whitespace-nowrap border-t-2 border-gray-200 pt-4">
           {post.title}
         </h2>
         <p>{post.description}</p>

@@ -11,6 +11,7 @@ export interface Post {
   userId: string;
   username: string;
   postImage: string;
+  timestamp: any;
 }
 
 const MainPage = () => {

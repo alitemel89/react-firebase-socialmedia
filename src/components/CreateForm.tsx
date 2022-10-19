@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { auth, db, storage } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -86,7 +86,8 @@ const CreateForm = () => {
       ...data,
       username: user?.displayName,
       userId: user?.uid,
-      postImage: imageUrls.slice(-1)
+      postImage: imageUrls.slice(-1),
+      timestamp: serverTimestamp()
     });
 
     navigate("/");

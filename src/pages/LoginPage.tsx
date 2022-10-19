@@ -23,7 +23,7 @@ const LoginPage = () => {
       />
       <div className="mx-auto text-center">
         <h2 className="text-3xl py-4 text-white">
-          Welcome to the Watermelon Joy
+          Welcome to the Travel Blog
         </h2>
         <button onClick={signInWithGoogle} className="text-white">Sign in with Google</button>
       </div>
