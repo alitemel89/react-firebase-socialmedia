@@ -85,6 +85,7 @@ const CreateForm = () => {
     await addDoc(postsRef, {
       ...data,
       username: user?.displayName,
+      userImage: user?.photoURL,
       userId: user?.uid,
       postImage: imageUrls.slice(-1),
       timestamp: serverTimestamp()
@@ -144,7 +145,7 @@ const CreateForm = () => {
                   <div className="mt-1">
                     <textarea
                       id="about"
-                      rows={3}
+                      rows={5}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       placeholder="Content of your post..."
                       defaultValue={""}
@@ -176,7 +177,7 @@ const CreateForm = () => {
                           strokeLinejoin="round"
                         />
                       </svg>
-                      <div className="flex text-sm text-gray-600">
+                      <div className="flex text-sm text-gray-600 flex-col">
                         <label
                           htmlFor="file-upload"
                           className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"

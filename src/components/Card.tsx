@@ -1,6 +1,4 @@
-import { useAuthState } from "react-firebase-hooks/auth";
 import { GoLocation } from "react-icons/go";
-import { auth } from "../config/firebase";
 import { Post as IPost } from "../pages/MainPage";
 import { BsCalendarDate } from "react-icons/bs";
 import moment from "moment";
@@ -11,7 +9,7 @@ interface PostProps {
 
 const Card = (props: PostProps) => {
   const { post } = props;
-  const [user] = useAuthState(auth);
+
   console.log(moment(post.timestamp.toDate()).format('LLLL'));
   
   
@@ -24,7 +22,7 @@ const Card = (props: PostProps) => {
       <div className="flex justify-between items-center mt-1 px-3">
         <div className="flex items-center">
           <img
-            src={user?.photoURL || ""}
+            src={post.userImage || ""}
             alt=""
             className="w-10 h-10 rounded-full"
           />

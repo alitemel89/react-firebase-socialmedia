@@ -10,6 +10,7 @@ export interface Post {
   description: string;
   userId: string;
   username: string;
+  userImage: string;
   postImage: string;
   timestamp: any;
 }
@@ -33,11 +34,15 @@ const MainPage = () => {
     <div>
       {postsLists ? (
         <div className="h-screen md:mx-auto md:w-1/2 m-1">
-          <h1 className="text-center text-2xl text-cyan-800 p-4">Latest Posts</h1>
+          <h1 className="text-center text-2xl text-cyan-800 p-4">
+            Latest Posts
+          </h1>
           <div className="grid grid-cols-1 gap-5">
-            {postsLists?.map((post) => (
-              <Card key={post.id} post={post} />
-            ))}
+            {postsLists
+              ?.sort((a: Post, b: Post) => b.timestamp - a.timestamp)
+              .map((post) => (
+                <Card key={post.id} post={post} />
+              ))}
           </div>
         </div>
       ) : (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineMenu, AiOutlineClose, AiOutlineHome } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -30,6 +30,7 @@ const Navbar = () => {
           <ul className="flex text-white items-center">
             {user ? (
               <>
+                <AiOutlineHome className="-mr-2" size={20} />
                 <Link to="/" className="px-4">
                   Feed
                 </Link>
@@ -120,7 +121,7 @@ const Navbar = () => {
               className={
                 nav
                   ? "w-full bg-slate-800 text-white absolute top-[90px] left-0 flex justify-center text-center"
-                  : "absolute left-[-100%]"
+                  : "absolute left-[-100%] md:hidden"
               }
             >
               <div className="flex flex-col items-center px-4">
@@ -130,12 +131,12 @@ const Navbar = () => {
 
                 <img
                   src={user?.photoURL || ""}
-                  className="h-12 w-12 rounded-full"
+                  className="h-12 w-12 rounded-full mb-2"
                   alt="profile"
                 />
 
                 <Link to="/" className="py-2">
-                  Home
+                  Feed
                 </Link>
 
                 <Link to="/about" className="py-2">
