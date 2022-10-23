@@ -15,10 +15,12 @@ import {
 } from "firebase/storage";
 import { v4 } from "uuid";
 
+
 interface CreateFormData {
   title: string;
   description: string;
   postImage: string;
+  location: string;
 }
 
 const CreateForm = () => {
@@ -37,7 +39,6 @@ const CreateForm = () => {
         setImageUrls((prev: string[]) => [...prev, url]);
       });
     });
-    
 
     const uploadTask = uploadBytesResumable(imageRef, imageUpload);
 
@@ -65,11 +66,10 @@ const CreateForm = () => {
     });
   }, []);
 
-  
-
   const schema = yup.object().shape({
     title: yup.string().required("You must add a title"),
     description: yup.string().required("You must add a description"),
+    location: yup.string().required("You must add a location"),
   });
   const {
     register,
@@ -88,11 +88,13 @@ const CreateForm = () => {
       userImage: user?.photoURL,
       userId: user?.uid,
       postImage: imageUrls.slice(-1),
-      timestamp: serverTimestamp()
+      timestamp: serverTimestamp(),
     });
 
     navigate("/");
   };
+
+  
 
   return (
     <div>
@@ -158,6 +160,27 @@ const CreateForm = () => {
                 </div>
 
                 <div>
+                  <label
+                    htmlFor="about"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Location
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      type="text"
+                      id="company-website"
+                      className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      placeholder="Enter your location..."
+                      {...register("location")}
+                    />
+                  </div>
+                  <p className="text-sm text-red-700">
+                    {errors.location?.message}
+                  </p>
+                </div>
+
+                <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Cover photo
                   </label>
@@ -201,7 +224,11 @@ const CreateForm = () => {
                         max="100"
                       />
 
-                      {progress === 100 && <p className="text-sm text-indigo-600">Image uploaded!</p>}
+                      {progress === 100 && (
+                        <p className="text-sm text-indigo-600">
+                          Image uploaded!
+                        </p>
+                      )}
 
                       <button
                         className="text-white py-1 text-sm px-2"

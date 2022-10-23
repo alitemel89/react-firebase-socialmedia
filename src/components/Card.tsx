@@ -30,7 +30,7 @@ const Card = (props: PostProps) => {
         </div>
         <span className="flex items-center rounded-md text-sm">
           <GoLocation size={20} className="mr-2" />
-          Antalya, Turkey
+          {post.location}
         </span>
       </div>
       <img src={post.postImage} alt="product" className="w-full object-fill" />

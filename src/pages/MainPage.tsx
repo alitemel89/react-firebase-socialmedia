@@ -13,6 +13,7 @@ export interface Post {
   userImage: string;
   postImage: string;
   timestamp: any;
+  location: string;
 }
 
 const MainPage = () => {
