@@ -74,7 +74,7 @@ const CreateForm = () => {
     });
 
   // eslint-disable-next-line
-  }, [navigate]);
+  }, []);
 
   const schema = yup.object().shape({
     title: yup.string().required("You must add a title"),
