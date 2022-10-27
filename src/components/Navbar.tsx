@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose, AiOutlineHome } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-import { auth } from "../config/firebase";
+import { auth } from "../config/firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
 

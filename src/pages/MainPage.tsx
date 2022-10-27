@@ -1,7 +1,7 @@
 import { getDocs, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
-import { db } from "../config/firebase";
+import { db } from "../config/firebase.js";
 import LoginPage from "./LoginPage";
 
 export interface Post {

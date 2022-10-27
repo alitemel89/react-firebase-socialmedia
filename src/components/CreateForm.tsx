@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { auth, db, storage } from "../config/firebase";
+import { auth, db, storage } from "../config/firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -73,7 +73,7 @@ const CreateForm = () => {
       });
     });
 
-
+  // eslint-disable-next-line
   }, []);
 
   const schema = yup.object().shape({
@@ -106,7 +106,7 @@ const CreateForm = () => {
 
   async function fetchAddress() {
     let locationArray: string[] = [];
-    const response = await fetch(
+    await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
       {
         method: "GET",
