@@ -29,6 +29,7 @@ const MainPage = () => {
 
   useEffect(() => {
     getPosts();
+  // eslint-disable-next-line 
   }, []);
 
   return (
