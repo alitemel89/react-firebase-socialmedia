@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 
+interface Coordinates {
+  latitude:number
+  longitude: number
+}
+
+
 export const usePosition = () => {
-  const [position, setPosition] = useState({});
+  const [position, setPosition] = useState<Coordinates>();
   const [error, setError] = useState<any>("");
 
   const onChange = ({ coords }: any) => {

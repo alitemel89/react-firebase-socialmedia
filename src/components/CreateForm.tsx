@@ -14,6 +14,8 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { v4 } from "uuid";
+import { usePosition } from "../hooks/usePosition";
+import { getJSON } from "../utils/getJSON";
 
 
 interface CreateFormData {
@@ -29,6 +31,12 @@ const CreateForm = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [user] = useAuthState(auth);
   const [progress, setProgress] = useState(0);
+  const { latitude, longitude, error } = usePosition();
+  const [county, setCounty] = useState<string>("");
+  
+
+  console.log(error);
+  
 
   const imagesListRef = ref(storage, "images/");
   const uploadFile = () => {
@@ -64,6 +72,8 @@ const CreateForm = () => {
         });
       });
     });
+
+
   }, []);
 
   const schema = yup.object().shape({
@@ -93,6 +103,26 @@ const CreateForm = () => {
 
     navigate("/");
   };
+
+  async function fetchAddress() {
+    let locationArray: string[] = [];
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`,
+      {
+        method: "GET",
+      }
+    ).then((response) => {
+      getJSON(response.url, function (err: any, data: any) {
+        if (err !== null) {
+          console.log("Something went wrong: " + err);
+        } else {
+          locationArray.push(data.address.county);
+          locationArray.push(data.address.province);
+          setCounty(locationArray[0]);
+        }
+      });
+    });
+  }
 
   
 
@@ -171,10 +201,17 @@ const CreateForm = () => {
                       type="text"
                       id="company-website"
                       className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      placeholder="Enter your location..."
                       {...register("location")}
+                      value={county ? county : error}                     
                     />
+                    
                   </div>
+                  <button
+                    className="text-white py-1 text-sm px-2 mt-2"
+                    onClick={fetchAddress}
+                  >
+                    Locate me
+                  </button>
                   <p className="text-sm text-red-700">
                     {errors.location?.message}
                   </p>
