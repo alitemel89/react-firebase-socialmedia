@@ -143,6 +143,10 @@ const Navbar = () => {
                   About
                 </Link>
 
+                <Link to="/createpost" className="py-2">
+                  Create a post
+                </Link>
+
                 <Link to="/login">
                   <button
                     className="flex items-center my-3"
